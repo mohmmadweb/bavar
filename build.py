@@ -578,7 +578,7 @@ def about_page():
         ("همراهی تا استقرار", "کار ما با امضای قرارداد تمام نمی‌شود؛ تا نخستین استقرار صنعتی کنار تیم می‌مانیم."),
     ]
     pr = "".join(f"<li><h3>{t}</h3><p>{d}</p></li>" for t, d in principles)
-    body = page_head(p, "درباره‌ی صندوق باور", FUND["about_short"], [("درباره ما", None)], img="about")
+    body = page_head(p, "درباره‌ی صندوق باور", FUND["about_short"], [("درباره ما", None)], img="hero-call")
     body += f'''<section class="sec">
   <div class="wrap">
     {section_head("آنچه به تیم‌ها می‌دهیم", "سرمایه تنها بخشی از همکاری است؛ بخش مهم‌تر، دسترسی به صنعت است.")}
@@ -657,7 +657,7 @@ def zarban_page():
     sup = "".join(f"<li><h3>{t}</h3><p>{d}</p></li>" for t, d in z["support"])
     faq = "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in z["faq"])
     body = f'''<section class="z-hero">
-  {picture(p, "zarban-stage", "", "z-hero-img", 1600, 900, eager=True)}
+  {picture(p, "hero-zarban", "", "z-hero-img", 1920, 1080, eager=True)}
   <div class="wrap z-hero-in">
     <nav class="crumbs" aria-label="مسیر صفحه"><a href="{p.u('')}">خانه</a> <span class="sep">/</span> <span aria-current="page">رویداد ملی ضربان</span></nav>
     <p class="ph-kicker">{z["edition"]}، {z["theme"]}</p>
