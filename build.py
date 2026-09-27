@@ -129,7 +129,7 @@ def header(page):
 def partner_marks(page, light=True):
     logo = "logo-light.png" if light else "logo.png"
     return f'''<ul class="partners" aria-label="حامیان صندوق">
-        <li><span class="pmark pmark-uni">{icon("cap")}</span><span>دانشگاه</span></li>
+        <li><span class="pmark pmark-uni">{icon("cap")}</span><span>دانشمند</span></li>
         <li><img src="{page.u('assets/brand/' + logo)}" alt="صندوق باور" width="56" height="54"><span>صندوق باور</span></li>
         <li><span class="pmark pmark-found">بنیاد</span><span>بنیاد</span></li>
       </ul>'''
@@ -140,7 +140,7 @@ def footer(page):
     return f'''<footer class="site-footer">
   <div class="wrap footer-grid">
     <section class="f-col">
-      <h2>سرمایه‌گذاری هدفمند در صندوق باور</h2>
+      <h2>سرمایه‌گذاری هوشمند در صندوق باور</h2>
       <ul class="f-list">{services}</ul>
       <a class="f-link" href="{page.u('apply/')}">ارسال طرح و ثبت‌نام اولیه {icon("arrow")}</a>
     </section>
@@ -152,10 +152,10 @@ def footer(page):
     <section class="f-col">
       <h2>ارتباط با ما</h2>
       <ul class="f-contact">
-        <li>{icon("pin")}<span>{FUND["address"]}</span></li>
-        <li>{icon("phone")}<a href="tel:{FUND["phone_href"]}" dir="ltr">{FUND["phone"]}</a></li>
-        <li>{icon("post")}<span>کد پستی: {FUND["postal"]}</span></li>
-        <li>{icon("mail")}<a href="mailto:{FUND["email"]}" dir="ltr">{FUND["email"]}</a></li>
+        <li>{icon("pin")}<span><b>آدرس:</b> {FUND["address"]}</span></li>
+        <li>{icon("phone")}<span><b>تلفن تماس:</b> <a href="tel:{FUND["phone_href"]}" dir="ltr">{FUND["phone"]}</a></span></li>
+        <li>{icon("post")}<span><b>کد پستی:</b> {FUND["postal"]}</span></li>
+        <li>{icon("mail")}<span><b>ایمیل:</b> <a href="mailto:{FUND["email"]}" dir="ltr">{FUND["email"]}</a></span></li>
       </ul>
     </section>
   </div>
@@ -276,8 +276,9 @@ def story_card(page, i, st):
     return f'''<article class="story-card">
         <figure class="story-fig">{picture(page, st["img"], st["name"], "story-img", 800, 1000)}
           <figcaption>{co["name"]}</figcaption></figure>
+        <p class="story-co"><strong>{co["name"]}</strong><span>{SECTOR[co["sector"]]["title"].split("،")[0]}</span></p>
         <blockquote><p>«{st["quote"]}»</p></blockquote>
-        <p class="story-by"><strong>{st["name"]}</strong><span>{st["role"]}، {co["name"]}</span></p>
+        <p class="story-by"><strong>{st["name"]}</strong><span>{st["role"]}</span></p>
         <button class="card-more" type="button" data-open="story-{i}">خواندن روایت کامل {icon("arrow")}</button>
       </article>'''
 
@@ -418,9 +419,9 @@ def home():
   </div>
 </section>'''
 
-    stories = f'''<section class="sec" aria-labelledby="stories-t">
+    stories = f'''<section class="sec sec-forest stories" aria-labelledby="stories-t">
   <div class="wrap">
-    {section_head("روایت باور", "تجربه‌ی همکاری از زبان بنیان‌گذاران.", hid="stories-t")}
+    {section_head("روایت باور", "تجربه‌ی همکاری از زبان بنیان‌گذاران؛ هر روایت با تصویر بنیان‌گذار، نام استارتاپ و حرف اصلی او.", ("همه‌ی روایت‌ها", p.u("stories/")), hid="stories-t", light=True)}
     <div class="story-grid">{"".join(story_card(p, i, s) for i, s in enumerate(STORIES))}</div>
   </div>
 </section>'''
@@ -477,7 +478,7 @@ def portfolio_page():
 </section>
 <section class="sec sec-paper" aria-labelledby="stories-t">
   <div class="wrap">
-    {section_head("روایت باور", "تجربه‌ی همکاری از زبان بنیان‌گذاران.", hid="stories-t")}
+    {section_head("روایت باور", "تجربه‌ی همکاری از زبان بنیان‌گذاران.", ("همه‌ی روایت‌ها", p.u("stories/")), hid="stories-t")}
     <div class="story-grid">{"".join(story_card(p, i, s) for i, s in enumerate(STORIES))}</div>
   </div>
 </section>'''
@@ -527,6 +528,33 @@ def sector_page(s):
     <ul class="other-sectors">{others}</ul>
   </div>
 </section>'''
+    return p, shell(p, body)
+
+
+def stories_page():
+    p = Page("stories", "روایت باور", "تجربه‌ی همکاری از زبان بنیان‌گذاران شرکت‌های سرمایه‌پذیر صندوق باور.", nav=None)
+    blocks = []
+    for i, st in enumerate(STORIES):
+        co = next(c for c in PORTFOLIO if c["slug"] == st["company"])
+        sec = SECTOR[co["sector"]]
+        paras = "".join(f"<p>{x}</p>" for x in st["story"])
+        blocks.append(f'''<article class="story-full{' is-flip' if i % 2 else ''}" id="{co["slug"]}">
+      <figure class="sf-fig">{picture(p, st["img"], st["name"], "sf-img", 800, 1000)}</figure>
+      <div class="sf-body">
+        <p class="story-co"><strong>{co["name"]}</strong><span>{sec["title"].split("،")[0]}</span></p>
+        <blockquote class="sf-quote"><p>«{st["quote"]}»</p></blockquote>
+        <div class="sf-text">{paras}</div>
+        <p class="story-by"><strong>{st["name"]}</strong><span>{st["role"]}، {co["name"]}</span></p>
+        <dl class="co-meta"><div><dt>ورود باور</dt><dd>{co["since"]}</dd></div><div><dt>مرحله</dt><dd>{co["stage"]}</dd></div></dl>
+        <a class="text-link" href="{p.u('sectors/' + sec['slug'] + '/')}">محور {sec["title"].split("،")[0]} {icon("arrow")}</a>
+      </div>
+    </article>''')
+    body = page_head(p, "روایت باور", "تجربه‌ی همکاری از زبان بنیان‌گذاران؛ از نخستین جلسه با باور تا استقرار راهکار در صنعت.",
+                     [("روایت باور", None)])
+    body += f'''<section class="sec">
+  <div class="wrap story-list">{"".join(blocks)}</div>
+</section>''' + cta_band(p, "روایت بعدی می‌تواند مال شما باشد",
+                         "طرح خود را در یکی از هفت محور سرمایه‌گذاری ثبت کنید. پیش از شروع، این مدارک را آماده داشته باشید:")
     return p, shell(p, body)
 
 
@@ -595,7 +623,7 @@ def about_page():
   <div class="wrap two-col">
     <div>
       <h2 class="h2">پشتوانه‌ی صندوق</h2>
-      <p class="muted">صندوق باور با همراهی بنیاد و دانشگاه تأسیس شده تا پیوند میان پژوهش دانشگاهی و نیاز صنایع بزرگ کشور را کوتاه‌تر کند.</p>
+      <p class="muted">صندوق باور با پشتوانه‌ی بنیاد و دانشمند فعالیت می‌کند تا فاصله‌ی میان پژوهش، فناوری و نیاز صنایع بزرگ کشور کوتاه‌تر شود.</p>
       <div class="backers">{partner_marks(p, light=False)}</div>
     </div>
     <aside class="side-card" id="contact">
@@ -829,7 +857,7 @@ def build():
     if DIST.exists():
         shutil.rmtree(DIST)
     shutil.copytree(SRC, DIST)
-    pages = [home(), portfolio_page(), news_index(), about_page(), club_page(), zarban_page(), apply_page()]
+    pages = [home(), portfolio_page(), stories_page(), news_index(), about_page(), club_page(), zarban_page(), apply_page()]
     pages += [sector_page(s) for s in SECTORS]
     pages += [news_article(n) for n in NEWS]
     for p, text in pages:

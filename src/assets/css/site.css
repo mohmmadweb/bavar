@@ -723,3 +723,38 @@ button { font: inherit; color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
 }
+
+/* ---------------------------------------------------------- روایت باور */
+.story-co { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .6rem; margin-bottom: .5rem; font-size: .9rem; }
+.story-co strong { color: var(--leaf-700); font-weight: 800; font-size: 1rem; }
+.story-co span { color: var(--muted); }
+.story-co span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-inline-end: .5rem; vertical-align: middle; background: var(--leaf-500); border-radius: 1px 4px 1px 4px; }
+
+.stories.sec-forest .story-card blockquote p { color: #fff; }
+.stories.sec-forest .story-co strong { color: var(--leaf-400); }
+.stories.sec-forest .story-co span { color: #a9bea7; }
+.stories.sec-forest .story-by strong { color: #fff; }
+.stories.sec-forest .story-by span { color: #a9bea7; }
+.stories.sec-forest .card-more { color: var(--leaf-400); }
+.stories.sec-forest .story-img { background: var(--forest-800); }
+.sec-forest .sec-link { color: var(--leaf-400); }
+
+.story-list { display: grid; gap: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
+.story-full { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 1rem + 4vw, 5rem); align-items: center; scroll-margin-top: calc(var(--header-h) + 24px); }
+.story-full.is-flip .sf-fig { order: 2; }
+.sf-fig { margin: 0; }
+.sf-img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 25%; border-radius: var(--leaf-r-lg); background: var(--leaf-100); }
+.story-full.is-flip .sf-img { border-radius: 48px 6px 48px 6px; }
+.sf-body { display: flex; flex-direction: column; gap: 1rem; }
+.sf-quote { margin: 0; padding-inline-start: 1.25rem; border-inline-start: 3px solid var(--leaf-500); }
+.sf-quote p { font-size: clamp(1.2rem, 1rem + .8vw, 1.55rem); font-weight: 750; line-height: 1.85; color: var(--ink); }
+.sf-text p { color: var(--ink-2); margin-bottom: .85rem; max-width: 62ch; }
+.story-full .co-meta { margin-top: 0; }
+@media (max-width: 860px) {
+  .story-full { grid-template-columns: 1fr; }
+  .story-full.is-flip .sf-fig { order: 0; }
+  .sf-img { aspect-ratio: 4 / 3.4; }
+}
+
+.f-contact b { color: #e6efe4; font-weight: 700; }
+.f-contact.dark b { color: var(--ink); }
